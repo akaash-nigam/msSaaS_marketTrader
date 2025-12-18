@@ -54,15 +54,28 @@ ai-trading-platform/
 ### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/akaash-nigam/msSaaS_marketTrader.git
+cd msSaaS_marketTrader
+
 # Install dependencies
 pnpm install
 
-# Start local databases (PostgreSQL, Redis, etc.)
-pnpm docker:up
+# Set up environment variables
+cp services/ai-service/.env.example services/ai-service/.env
+cp apps/web/.env.example apps/web/.env.local
 
-# Start all services in development mode
-pnpm dev
+# Add your Anthropic API key to services/ai-service/.env
+ANTHROPIC_API_KEY=your_api_key_here
+
+# Start AI service (in one terminal)
+pnpm --filter @trading-platform/ai-service dev
+
+# Start web app (in another terminal)
+pnpm --filter @trading-platform/web dev
 ```
+
+Open [http://localhost:3006](http://localhost:3006) to see the app!
 
 ### Environment Variables
 
@@ -129,11 +142,16 @@ pnpm build
 
 ### Phase 1: MVP (Months 1-3) ✅ In Progress
 - [x] Project setup and architecture
-- [ ] AI chat interface
-- [ ] Natural language stock search
-- [ ] Basic charting
+- [x] AI chat interface (Claude 4.5 Sonnet integration)
+- [x] Stock analysis tool
+- [x] Interactive candlestick charts
+- [x] Watchlist functionality
+- [x] Landing page
+- [ ] Real market data integration
 - [ ] Paper trading (Alpaca)
 - [ ] User authentication
+
+**See [FEATURE_ROADMAP.md](./FEATURE_ROADMAP.md) for detailed feature planning**
 
 ### Phase 2: Intelligence (Months 4-6)
 - [ ] Multimodal analysis (news + sentiment)
@@ -162,8 +180,17 @@ We're in early development. Check `docs/ARCHITECTURE.md` for technical details a
 
 Proprietary - All rights reserved
 
+## 📖 Available Pages
+
+- **`/`** - AI Chat Interface
+- **`/analyze`** - Stock Analysis Tool
+- **`/charts`** - Interactive Charting
+- **`/watchlist`** - Portfolio Watchlist
+- **`/landing`** - Marketing Landing Page
+
 ## 🔗 Links
 
+- [Feature Roadmap](./FEATURE_ROADMAP.md)
 - [Product Requirements (PRD)](./docs/PRD.md)
 - [Technical Architecture](./docs/ARCHITECTURE.md)
 - [Market Analysis](./docs/TRADING_PLATFORM_ANALYSIS.md)

@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Search, TrendingUp, TrendingDown, Sparkles, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
+const AI_SERVICE_URL = process.env.NEXT_PUBLIC_AI_SERVICE_URL || 'http://localhost:5001'
+
 export default function AnalyzePage() {
   const [symbol, setSymbol] = useState('')
   const [analysis, setAnalysis] = useState<string | null>(null)
@@ -18,7 +20,7 @@ export default function AnalyzePage() {
     setAnalysis(null)
 
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/analyze/${symbol.toUpperCase()}`, {
+      const response = await fetch(`${AI_SERVICE_URL}/api/v1/analyze/${symbol.toUpperCase()}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -38,7 +40,7 @@ export default function AnalyzePage() {
         throw new Error('Failed to analyze stock')
       }
     } catch (err) {
-      setError('Failed to connect to AI service. Make sure it\'s running on localhost:5000')
+      setError(`Failed to connect to AI service. Make sure it's running on ${AI_SERVICE_URL}`)
     } finally {
       setIsLoading(false)
     }

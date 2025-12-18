@@ -17,6 +17,8 @@ const examplePrompts = [
   "Compare AAPL vs MSFT for long-term"
 ]
 
+const AI_SERVICE_URL = process.env.NEXT_PUBLIC_AI_SERVICE_URL || 'http://localhost:5001'
+
 export default function HomePage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -41,7 +43,7 @@ export default function HomePage() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:5000/api/v1/chat/simple', {
+      const response = await fetch(`${AI_SERVICE_URL}/api/v1/chat/simple`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: content })
@@ -61,7 +63,7 @@ export default function HomePage() {
     } catch (error) {
       const errorMessage: Message = {
         role: 'assistant',
-        content: '❌ Failed to connect to AI service. Make sure the AI service is running on http://localhost:5000'
+        content: `❌ Failed to connect to AI service. Make sure the AI service is running on ${AI_SERVICE_URL}`
       }
       setMessages(prev => [...prev, errorMessage])
     } finally {
@@ -196,7 +198,7 @@ export default function HomePage() {
           {/* Service Status */}
           <div className="flex items-center justify-center mt-3 text-xs text-gray-500">
             <AlertCircle className="h-3 w-3 mr-1" />
-            <span>Make sure AI service is running on localhost:5000</span>
+            <span>AI service: {AI_SERVICE_URL}</span>
           </div>
         </div>
       </div>
